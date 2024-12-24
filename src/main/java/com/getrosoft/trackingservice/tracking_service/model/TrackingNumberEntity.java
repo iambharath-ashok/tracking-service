@@ -54,4 +54,9 @@ public class TrackingNumberEntity implements Serializable {
     @NotBlank(message = "Customer slug cannot be blank")
     @Size(max = 50, message = "Customer slug must be at most 50 characters long")
     private String customerSlug;
+
+    @Schema(description = "Customer name", example = "RedBox Logistics")
+    @NotBlank(message = "Customer name cannot be blank")
+    @Size(max = 100, message = "Customer name must be at most 100 characters long")
+    private String customerName;
 }
