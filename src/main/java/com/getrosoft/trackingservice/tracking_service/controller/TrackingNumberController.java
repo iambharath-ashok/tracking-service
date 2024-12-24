@@ -67,7 +67,10 @@ public class TrackingNumberController {
             @RequestParam UUID customerId,
             @Valid
             @Parameter(description = "Customer slug", example = "example-customer", required = true)
-            @RequestParam String customerSlug) {
+            @RequestParam String customerSlug,
+            @Valid
+            @Parameter(description = "Customer name", example = "RedBox Logistics", required = true)
+            @RequestParam String customerName) {
 
         logger.info("Received request to generate tracking number with originCountryId={}, destinationCountryId={}, weight={}, customerId={}, customerSlug={}",
                 originCountryId, destinationCountryId, weight, customerId, customerSlug);
@@ -81,6 +84,7 @@ public class TrackingNumberController {
                         .weight(weight)
                         .customerId(customerId)
                         .customerSlug(customerSlug)
+                        .customerName(customerName)
                         .build();
 
                 // Call the service layer

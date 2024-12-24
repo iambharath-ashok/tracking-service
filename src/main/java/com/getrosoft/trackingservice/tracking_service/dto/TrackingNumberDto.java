@@ -47,13 +47,19 @@ public class TrackingNumberDto {
     @Size(max = 50, message = "Customer slug must be at most 50 characters long")
     private String customerSlug;
 
+    @Schema(description = "Customer name", example = "RedBox Logistics")
+    @NotBlank(message = "Customer name cannot be blank")
+    @Size(max = 100, message = "Customer name must be at most 100 characters long")
+    private String customerName;
+
     // Manually defined all-argument constructor excluding trackingNumber and createdAt
-    public TrackingNumberDto(String originCountryId, String destinationCountryId, BigDecimal weight, UUID customerId, String customerSlug) {
+    public TrackingNumberDto(String originCountryId, String destinationCountryId, BigDecimal weight, UUID customerId, String customerSlug, String customerName) {
         this.originCountryId = originCountryId;
         this.destinationCountryId = destinationCountryId;
         this.weight = weight;
         this.customerId = customerId;
         this.customerSlug = customerSlug;
+        this.customerName = customerName;
     }
 }
 

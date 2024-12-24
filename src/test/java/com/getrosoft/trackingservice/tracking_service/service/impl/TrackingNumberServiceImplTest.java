@@ -1,7 +1,6 @@
 package com.getrosoft.trackingservice.tracking_service.service.impl;
 
 import com.getrosoft.trackingservice.tracking_service.dto.TrackingNumberDto;
-import com.getrosoft.trackingservice.tracking_service.exceptions.DuplicateTrackingNumberException;
 import com.getrosoft.trackingservice.tracking_service.exceptions.InvalidInputException;
 import com.getrosoft.trackingservice.tracking_service.exceptions.TrackingIdNotFoundException;
 import com.getrosoft.trackingservice.tracking_service.exceptions.TrackingNumberGenerationException;
@@ -47,9 +46,9 @@ class TrackingNumberServiceImplTest {
     @Test
     void testCreateTrackingNumber_Success() {
         // Arrange
-        TrackingNumberDto requestDto = new TrackingNumberDto("IN", "US", BigDecimal.valueOf(2.5), UUID.randomUUID(), "customer-slug");
+        TrackingNumberDto requestDto = new TrackingNumberDto("IN", "US", BigDecimal.valueOf(2.5), UUID.randomUUID(), "customer-slug", "RedBox Logistics");
         TrackingNumberEntity mockEntity = new TrackingNumberEntity(
-                "INUS123456789012", Instant.now(), "IN", "US", BigDecimal.valueOf(2.5), UUID.randomUUID(), "customer-slug"
+                "INUS123456789012", Instant.now(), "IN", "US", BigDecimal.valueOf(2.5), UUID.randomUUID(), "customer-slug", "RedBox Logistics"
         );
 
         when(validator.validate(requestDto)).thenReturn(Set.of());
@@ -70,7 +69,7 @@ class TrackingNumberServiceImplTest {
     void testCreateTrackingNumber_DuplicateCollisionHandled() {
         // Arrange
         UUID customerId = UUID.randomUUID();
-        TrackingNumberDto requestDto = new TrackingNumberDto("IN", "US", BigDecimal.valueOf(2.5), customerId, "customer-slug");
+        TrackingNumberDto requestDto = new TrackingNumberDto("IN", "US", BigDecimal.valueOf(2.5), customerId, "customer-slug", "RedBox Logistics");
         TrackingNumberEntity mockEntity = new TrackingNumberEntity(
                 "INUS123456789012",
                 Instant.now(),
@@ -78,7 +77,8 @@ class TrackingNumberServiceImplTest {
                 "US",
                 BigDecimal.valueOf(2.5),
                 customerId,
-                "customer-slug"
+                "customer-slug",
+                "RedBox Logistics"
         );
         TrackingNumberDto expectedDto = TrackingNumberDto.builder()
                 .originCountryId("IN")
@@ -111,7 +111,7 @@ class TrackingNumberServiceImplTest {
     @Test
     void testCreateTrackingNumber_InvalidInput() {
         // Arrange
-        TrackingNumberDto requestDto = new TrackingNumberDto(null, null, null, null, null);
+        TrackingNumberDto requestDto = new TrackingNumberDto(null, null, null, null, null, null);
 
         // Mock a constraint violation
         @SuppressWarnings("unchecked")
@@ -140,7 +140,7 @@ class TrackingNumberServiceImplTest {
     @Test
     void testCreateTrackingNumber_UnexpectedError() {
         // Arrange
-        TrackingNumberDto requestDto = new TrackingNumberDto("IN", "US", BigDecimal.valueOf(1.0), UUID.randomUUID(), "customer-slug");
+        TrackingNumberDto requestDto = new TrackingNumberDto("IN", "US", BigDecimal.valueOf(1.0), UUID.randomUUID(), "customer-slug", "RedBox Logistics");
 
         when(validator.validate(requestDto)).thenReturn(Set.of());
         when(repository.existsById(anyString())).thenThrow(new RuntimeException("Unexpected error"));
@@ -156,9 +156,9 @@ class TrackingNumberServiceImplTest {
         // Arrange
         String trackingId = "INUS123456789012";
         TrackingNumberEntity mockEntity = new TrackingNumberEntity(
-                trackingId, Instant.now(), "IN", "US", BigDecimal.valueOf(2.5), UUID.randomUUID(), "customer-slug"
+                trackingId, Instant.now(), "IN", "US", BigDecimal.valueOf(2.5), UUID.randomUUID(), "customer-slug", "RedBox Logistics"
         );
-        TrackingNumberDto mockDto = new TrackingNumberDto("IN", "US", BigDecimal.valueOf(2.5), UUID.randomUUID(), "customer-slug");
+        TrackingNumberDto mockDto = new TrackingNumberDto("IN", "US", BigDecimal.valueOf(2.5), UUID.randomUUID(), "customer-slug", "RedBox Logistics");
 
         when(repository.findById(trackingId)).thenReturn(Optional.of(mockEntity));
         when(modelMapper.map(mockEntity, TrackingNumberDto.class)).thenReturn(mockDto);

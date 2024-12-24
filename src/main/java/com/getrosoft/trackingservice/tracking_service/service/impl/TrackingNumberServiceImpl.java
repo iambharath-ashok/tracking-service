@@ -48,7 +48,8 @@ public class TrackingNumberServiceImpl implements TrackingNumberService {
                     requestDto.getDestinationCountryId(),
                     requestDto.getWeight(),
                     requestDto.getCustomerId(),
-                    requestDto.getCustomerSlug()
+                    requestDto.getCustomerSlug(),
+                    requestDto.getCustomerName()
             );
             final TrackingNumberEntity savedRecord = this.repository.save(record);
             logger.info("Successfully created tracking number: {}", trackingNumber);
